@@ -55,6 +55,6 @@
   parameter: (identifier) @variable.parameter)
 
 (match_arm
-  pattern: (identifier) @variable.definition)
+  pattern: (pattern (identifier) @variable.definition))
 
-(identifier) @variable
+(atom (identifier) @variable)

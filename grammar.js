@@ -152,7 +152,7 @@ export default grammar({
 
     wildcard_pattern: $ => '_',
 
-    identifier: $ => /[a-zA-Z_][a-zA-Z0-9_]*/,
+    identifier: $ => token(/[a-zA-Z_][a-zA-Z0-9_]*/),
 
     integer: $ => token(/[0-9]+/),
 
