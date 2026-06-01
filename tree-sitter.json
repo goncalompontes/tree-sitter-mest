@@ -1,0 +1,42 @@
+{
+  "$schema": "https://tree-sitter.github.io/tree-sitter/assets/schemas/config.schema.json",
+  "grammars": [
+    {
+      "name": "mest",
+      "camelcase": "Mest",
+      "title": "Mest",
+      "scope": "source.mest",
+      "file-types": [
+        "mest"
+      ],
+      "injection-regex": "^mest$",
+      "class-name": "TreeSitterMest"
+    }
+  ],
+  "metadata": {
+    "version": "0.1.0",
+    "license": "MIT",
+    "description": "A simple functional programming language made for learning purposes!",
+    "authors": [
+      {
+        "name": "Gonçalo Pontes",
+        "email": "gpm.pontes@gmail.com",
+        "url": ""
+      }
+    ],
+    "links": {
+      "repository": "https://github.com/goncalompontes/tree-sitter-mest",
+      "funding": ""
+    }
+  },
+  "bindings": {
+    "c": true,
+    "go": true,
+    "java": false,
+    "node": true,
+    "python": true,
+    "rust": true,
+    "swift": true,
+    "zig": false
+  }
+}
