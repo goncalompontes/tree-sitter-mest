@@ -5,8 +5,10 @@
 
 (let_expression
   "let" @keyword
-  "rec" @keyword
   "in" @keyword)
+
+(let_expression
+  "rec" @keyword)
 
 (match_expression
   "match" @keyword)
