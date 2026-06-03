@@ -50,12 +50,31 @@ export default grammar({
     let_expression: $ => seq(
       'let',
       optional('rec'),
-      field('name', $.identifier),
+      $.let_binding,
+      repeat(seq('and', $.let_binding)),
+      'in',
+      field('body', $.expression),
+    ),
+
+    bind_pattern: $ => choice(
+      $.identifier,
+      $.tuple_bind_pattern,
+    ),
+
+    tuple_bind_pattern: $ => seq(
+      '(',
+      $.bind_pattern,
+      ',',
+      optional($.bind_pattern),
+      repeat(seq(',', $.bind_pattern)),
+      ')',
+    ),
+
+    let_binding: $ => seq(
+      field('name', $.bind_pattern),
       repeat(field('parameter', $.identifier)),
       '=',
       field('value', $.expression),
-      'in',
-      field('body', $.expression),
     ),
 
     match_expression: $ => prec.right(seq(
@@ -73,7 +92,7 @@ export default grammar({
 
     lambda_expression: $ => seq(
       '|',
-      field('parameter', $.identifier),
+      $.pattern,
       '|',
       field('body', $.expression),
     ),
@@ -135,6 +154,7 @@ export default grammar({
       $.integer,
       $.float,
       $.boolean,
+      $.tuple_expression,
       seq('(', $.expression, ')'),
     ),
 
@@ -142,6 +162,7 @@ export default grammar({
       $.wildcard_pattern,
       $.literal,
       $.identifier,
+      $.tuple_pattern,
     ),
 
     literal: $ => choice(
@@ -159,5 +180,23 @@ export default grammar({
     float: $ => token(/[0-9]+\.[0-9]+/),
 
     boolean: $ => choice('true', 'false'),
+
+    tuple_expression: $ => seq(
+      '(',
+      $.expression,
+      ',',
+      optional($.expression),
+      repeat(seq(',', $.expression)),
+      ')',
+    ),
+
+    tuple_pattern: $ => seq(
+      '(',
+      $.pattern,
+      ',',
+      optional($.pattern),
+      repeat(seq(',', $.pattern)),
+      ')',
+    ),
   }
 });

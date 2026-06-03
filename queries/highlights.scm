@@ -10,6 +10,9 @@
 (let_expression
   "rec" @keyword)
 
+(let_expression
+  "and" @keyword)
+
 (match_expression
   "match" @keyword)
 
@@ -43,18 +46,25 @@
   ")"
 ] @punctuation.bracket
 
+"," @punctuation.delimiter
+
 (integer) @number
 (float) @number.float
 (boolean) @constant.builtin
 
-(let_expression
-  name: (identifier) @variable.definition)
+(let_binding
+  name: (bind_pattern
+    (identifier) @variable.definition))
 
-(let_expression
+(tuple_bind_pattern
+  (bind_pattern
+    (identifier) @variable.definition))
+
+(let_binding
   parameter: (identifier) @variable.parameter)
 
 (lambda_expression
-  parameter: (identifier) @variable.parameter)
+  (pattern (identifier) @variable.parameter))
 
 (match_arm
   pattern: (pattern (identifier) @variable.definition))
