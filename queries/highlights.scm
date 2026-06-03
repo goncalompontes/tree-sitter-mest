@@ -1,3 +1,12 @@
+; ── keywords ─────────────────────────────────────────────────────
+
+(type_expression
+  "type" @keyword
+  "in" @keyword)
+
+(type_expression
+  "and" @keyword)
+
 (if_expression
   "if" @keyword
   "then" @keyword
@@ -16,12 +25,23 @@
 (match_expression
   "match" @keyword)
 
+; ── operators ────────────────────────────────────────────────────
+
 (lambda_expression
   "|" @operator)
 
 (match_arm
   "|" @operator
   "=>" @operator)
+
+(union_type
+  "|" @operator)
+
+(type_expr
+  "->" @operator)
+
+(variant
+  "|" @operator)
 
 [
   "+"
@@ -41,6 +61,8 @@
   "="
 ] @operator
 
+; ── punctuation ──────────────────────────────────────────────────
+
 [
   "("
   ")"
@@ -48,9 +70,18 @@
 
 "," @punctuation.delimiter
 
+; ── literals ─────────────────────────────────────────────────────
+
 (integer) @number
 (float) @number.float
 (boolean) @constant.builtin
+
+; ── type definitions ─────────────────────────────────────────────
+
+(variant
+  name: (identifier) @constructor)
+
+; ── variable definitions ─────────────────────────────────────────
 
 (let_binding
   name: (bind_pattern
@@ -69,4 +100,20 @@
 (match_arm
   pattern: (pattern (identifier) @variable.definition))
 
+; ── references ───────────────────────────────────────────────────
+
+; Generic identifier reference (will be overridden below)
 (atom (identifier) @variable)
+
+; Uppercase identifiers in expression positions are constructors
+((atom (identifier) @constructor)
+  (#match? @constructor "^[A-Z]"))
+
+; Uppercase identifiers in pattern positions are constructors
+((match_arm
+  pattern: (pattern (identifier) @constructor))
+  (#match? @constructor "^[A-Z]"))
+
+; ── type expressions ─────────────────────────────────────────────
+
+(type_atom (identifier) @type)
